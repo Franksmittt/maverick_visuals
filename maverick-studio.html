@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Maverick Painting — Business Card Studio</title>
+    <link rel="stylesheet" href="assets/maverick-mobile.css">
+    <style>
+        :root {
+            --mav-shell: 1600px;
+            --charcoal: #111418;
+            --obsidian: #1a1d24;
+            --turq: #00d2d3;
+            --turquoise: #00d2d3;
+            --green: #00e676;
+            --bright-green: #00e676;
+            --font-main: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "Helvetica Neue", Roboto, sans-serif;
+            --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Roboto Mono", monospace;
+            --glass-bg: rgba(17, 20, 24, 0.75);
+            --glass-border: rgba(0, 210, 211, 0.4);
+            --card-width: 840px;
+            --card-height: 480px;
+            --white: #ffffff;
+            --titanium: #a1a1a6;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: var(--font-main);
+            background: #050608;
+            color: #fff;
+            margin: 0;
+            padding: 40px 24px;
+        }
+
+        .site-nav {
+            max-width: var(--mav-shell);
+            margin: 0 auto 20px;
+            font-size: 14px;
+        }
+        .site-nav a {
+            color: var(--titanium);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(161, 161, 166, 0.35);
+        }
+        .site-nav a:hover {
+            color: var(--white);
+            border-bottom-color: rgba(255, 255, 255, 0.35);
+        }
+
+        .mav-subnav {
+            max-width: var(--mav-shell);
+            margin: 0 auto 28px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 18px;
+            background: rgba(20, 24, 28, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+        }
+        .mav-subnav a {
+            color: var(--titanium);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+        .mav-subnav a:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .mav-subnav a.is-active {
+            color: #000;
+            background: var(--turquoise);
+        }
+
+        .control-panel {
+            text-align: center;
+            margin: 0 auto 40px;
+            max-width: var(--mav-shell);
+            padding: 28px 24px;
+            background: #0c0e12;
+            border: 1px solid #1a1f26;
+            border-radius: 16px;
+        }
+        .control-panel h1 {
+            font-weight: 900;
+            font-size: clamp(22px, 4vw, 32px);
+            letter-spacing: -0.5px;
+            margin: 0 0 10px;
+            color: var(--turq);
+            text-transform: uppercase;
+        }
+        .control-panel .subtitle {
+            color: #888;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            line-height: 1.55;
+            margin: 0 auto;
+            max-width: 720px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+            gap: 40px;
+            max-width: var(--mav-shell);
+            margin: 0 auto;
+        }
+
+        .card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #0c0e12;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #1a1f26;
+        }
+
+        .card-actions-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .card-label {
+            font-family: var(--font-mono);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .btn-upload,
+        .btn-download {
+            background: var(--obsidian);
+            border: 1px solid var(--turq);
+            color: var(--turq);
+            padding: 10px 16px;
+            font-family: var(--font-main);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+        .btn-upload:hover,
+        .btn-download:hover {
+            background: var(--turq);
+            color: var(--charcoal);
+        }
+        .btn-upload input[type="file"] { display: none; }
+        .btn-download {
+            width: 100%;
+            margin-top: 4px;
+            background: var(--turq);
+            color: var(--charcoal);
+            font-size: 15px;
+            padding: 14px;
+            border: none;
+        }
+        .btn-download:hover { background: #fff; color: var(--charcoal); }
+        .btn-download:disabled {
+            opacity: 0.55;
+            cursor: wait;
+        }
+
+        .scale-wrapper {
+            width: 100%;
+            aspect-ratio: 7 / 4;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #222;
+            border-radius: 4px;
+            background: #000;
+        }
+
+        .biz-card {
+            width: var(--card-width);
+            height: var(--card-height);
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: var(--charcoal);
+            background-size: cover;
+            background-position: center;
+            transform-origin: top left;
+            overflow: hidden;
+        }
+
+        .mono { font-family: var(--font-mono); }
+        .sans { font-family: var(--font-main); }
+        .txt-turq { color: var(--turq); }
+        .txt-green { color: var(--green); }
+        .txt-white { color: #fff; }
+
+        .txt-harsh {
+            text-shadow:
+                -1.5px -1.5px 0 #000,
+                1.5px -1.5px 0 #000,
+                -1.5px 1.5px 0 #000,
+                1.5px 1.5px 0 #000,
+                0 6px 15px rgba(0, 0, 0, 0.9),
+                0 0 25px rgba(0, 0, 0, 0.95);
+        }
+
+        .h-logo { font-size: 48px; font-weight: 900; letter-spacing: 2px; line-height: 1; }
+        .h-tag { font-size: 20px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-top: 8px; color: var(--turq); }
+        .h-name { font-size: 40px; font-weight: 800; letter-spacing: -1px; color: #fff; }
+        .h-title { font-size: 22px; font-weight: 500; color: var(--turq); margin-bottom: 25px; }
+
+        .data-list { font-size: 20px; line-height: 1.6; color: #f0f0f0; font-weight: 500; }
+        .data-list span { color: var(--turq); margin-right: 12px; font-weight: 800; }
+
+        .qa-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid var(--green);
+            padding: 8px 16px;
+            font-family: var(--font-mono);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--green);
+            text-transform: uppercase;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+        }
+        .qa-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 5px var(--green);
+        }
+
+        .t1-panel {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 45%;
+            height: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-right: 2px solid var(--glass-border);
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .t2-box {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(21, 24, 28, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--turq);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+            width: 60%;
+            max-width: calc(100% - 60px);
+            box-sizing: border-box;
+        }
+
+        .t3-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--obsidian);
+            border-top: 4px solid var(--green);
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.7);
+            box-sizing: border-box;
+        }
+
+        .t4-right {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 55%;
+            max-width: 100%;
+            background: linear-gradient(90deg, rgba(17, 20, 24, 0) 0%, rgba(17, 20, 24, 0.9) 20%, rgba(17, 20, 24, 1) 100%);
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+            text-align: right;
+            box-sizing: border-box;
+        }
+
+        .t5-frame {
+            position: absolute;
+            inset: 25px;
+            border: 4px solid var(--charcoal);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+        .t5-header {
+            background: var(--charcoal);
+            padding: 20px 30px;
+            width: fit-content;
+            max-width: calc(100% - 20px);
+            border-bottom-right-radius: 12px;
+            pointer-events: auto;
+        }
+        .t5-footer {
+            background: var(--charcoal);
+            padding: 20px 30px;
+            display: flex;
+            gap: 24px 40px;
+            flex-wrap: wrap;
+            border-top-left-radius: 12px;
+            align-self: flex-end;
+            pointer-events: auto;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .t6-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 40px;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+            box-sizing: border-box;
+        }
+        .t6-bot {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--turq);
+            color: var(--charcoal);
+            padding: 30px 40px;
+            border-top-left-radius: 30px;
+            box-shadow: -10px -10px 30px rgba(0, 0, 0, 0.6);
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* html2canvas: flatten glass (export clone gets .mav-exporting) */
+        .biz-card.mav-exporting .t1-panel,
+        .biz-card.mav-exporting .qa-badge {
+            background: rgba(22, 26, 32, 0.92) !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+    </style>
+</head>
+<body>
+    <nav class="site-nav"><a href="index.html">Hub</a></nav>
+
+    <nav class="mav-subnav" aria-label="Maverick studios">
+        <a href="maverick-studio.html" class="is-active" aria-current="page">Business cards</a>
+        <a href="maverick-social.html">Social templates</a>
+        <a href="maverick-brand.html">Brand guide</a>
+        <a href="maverick-flyer.html">Flyers &amp; brochures</a>
+        <a href="maverick-corporate.html">Corporate</a>
+    </nav>
+
+    <div class="control-panel">
+        <h1>Maverick Print Studio</h1>
+        <p class="subtitle">Six pro layouts at <strong>840×480</strong> (3.5″×2″ @ 300&nbsp;DPI). Upload a background per card. Download <strong>2520×1440</strong> PNG (3×) for print.</p>
+    </div>
+
+    <div class="grid" id="cardGrid" aria-label="Business card templates"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" crossorigin="anonymous"></script>
+    <script src="assets/maverick-blob-download.js"></script>
+    <script>
+        (function () {
+            var contactData =
+                '<div class="data-list mono">' +
+                '<div><span>TEL</span>+27 82 627 7082</div>' +
+                '<div><span>WEB</span>maverickpainting.co.za</div>' +
+                '</div>';
+
+            var templates = [
+                {
+                    id: 'mav-biz-01',
+                    name: '01. Glass &amp; Charcoal Matrix',
+                    html:
+                        '<div class="t1-panel">' +
+                        '<div><div class="h-logo txt-white">MAVERICK</div><div class="h-tag">Structural Remediation</div></div>' +
+                        '<div><div class="h-name">Lawrence Brooks</div><div class="h-title">Director &amp; Specialist</div>' +
+                        contactData +
+                        '</div></div>' +
+                        '<div style="position:absolute;bottom:40px;right:40px;"><div class="qa-badge">Independent QA</div></div>'
+                },
+                {
+                    id: 'mav-biz-02',
+                    name: '02. The Cupertino Float',
+                    html:
+                        '<div style="position:absolute;top:40px;right:40px;text-align:right;" class="txt-harsh">' +
+                        '<div class="h-logo txt-white">MAVERICK</div>' +
+                        '<div class="h-tag" style="color:var(--green);">Advanced Coatings</div></div>' +
+                        '<div class="t2-box">' +
+                        '<div class="h-name">Lawrence Brooks</div>' +
+                        '<div class="h-title">Turn-Key Asset Solution</div>' +
+                        '<div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;">' +
+                        contactData +
+                        '</div></div>'
+                },
+                {
+                    id: 'mav-biz-03',
+                    name: '03. The Tech Bar Bottom',
+                    html:
+                        '<div style="position:absolute;top:40px;left:40px;" class="txt-harsh">' +
+                        '<div class="h-logo txt-white" style="font-size:56px;">MAVERICK</div>' +
+                        '<div class="qa-badge" style="margin-top:15px;">MBA / NAMA Registered</div></div>' +
+                        '<div class="t3-bar">' +
+                        '<div><div class="h-name">Lawrence Brooks</div><div class="h-title" style="margin-bottom:0;">Project Director</div></div>' +
+                        '<div style="text-align:right;">' +
+                        contactData +
+                        '</div></div>'
+                },
+                {
+                    id: 'mav-biz-04',
+                    name: '04. OLED Minimalist Right',
+                    html:
+                        '<div style="position:absolute;top:40px;left:40px;">' +
+                        '<div class="qa-badge" style="border-color:var(--turq);color:var(--turq);">Specialized Contractor</div></div>' +
+                        '<div class="t4-right">' +
+                        '<div class="h-logo txt-white" style="margin-bottom:40px;">MAVERICK</div>' +
+                        '<div class="h-name">Lawrence Brooks</div>' +
+                        '<div class="h-title">Structural Assessor</div>' +
+                        '<div style="margin-top:20px;">' +
+                        contactData +
+                        '</div></div>'
+                },
+                {
+                    id: 'mav-biz-05',
+                    name: '05. Structural Edge Framing',
+                    html:
+                        '<div class="t5-frame">' +
+                        '<div class="t5-header">' +
+                        '<div class="h-logo txt-white">MAVERICK</div><div class="h-tag">Beyond Paint.</div></div>' +
+                        '<div class="t5-footer">' +
+                        '<div><div class="h-name" style="font-size:32px;">Lawrence Brooks</div><div class="h-title" style="margin-bottom:0;">Director</div></div>' +
+                        '<div class="data-list mono" style="font-size:16px;">' +
+                        '<div><span>TEL</span>+27 82 627 7082</div>' +
+                        '<div><span>WEB</span>maverickpainting.co.za</div></div></div></div>'
+                },
+                {
+                    id: 'mav-biz-06',
+                    name: '06. The Developer Split',
+                    html:
+                        '<div class="t6-top txt-harsh">' +
+                        '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">' +
+                        '<div><div class="h-logo txt-white">MAVERICK</div>' +
+                        '<div class="h-title" style="margin-top:5px;margin-bottom:0;">De-Risking Multi-Million Rand Assets</div></div>' +
+                        '<div class="qa-badge">Approved Applicator</div></div></div>' +
+                        '<div class="t6-bot">' +
+                        '<div class="h-name" style="color:var(--charcoal);">Lawrence Brooks</div>' +
+                        '<div class="data-list mono" style="color:var(--charcoal);margin-top:15px;font-weight:800;">' +
+                        '<div><span style="color:#000;">TEL</span>+27 82 627 7082</div>' +
+                        '<div><span style="color:#000;">WEB</span>maverickpainting.co.za</div></div></div>'
+                }
+            ];
+
+            function escapeAttr(s) {
+                return String(s)
+                    .replace(/&/g, '&amp;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+            }
+
+            function buildGrid() {
+                var grid = document.getElementById('cardGrid');
+                if (!grid) return;
+                var html = templates
+                    .map(function (t) {
+                        return (
+                            '<div class="card-container" data-biz-id="' +
+                            escapeAttr(t.id) +
+                            '">' +
+                            '<div class="card-actions-top">' +
+                            '<span class="card-label">' +
+                            t.name +
+                            '</span>' +
+                            '<label class="btn-upload">Upload background<input type="file" class="js-biz-upload" accept="image/*" hidden></label>' +
+                            '</div>' +
+                            '<div class="scale-wrapper">' +
+                            '<div class="biz-card js-biz-card" id="' +
+                            escapeAttr(t.id) +
+                            '" data-export-w="2520" data-export-h="1440">' +
+                            t.html +
+                            '</div></div>' +
+                            '<button type="button" class="btn-download js-biz-download">Download high-res PNG</button>' +
+                            '</div>'
+                        );
+                    })
+                    .join('');
+                grid.innerHTML = html;
+            }
+
+            function resizeCards() {
+                document.querySelectorAll('.scale-wrapper').forEach(function (wrapper) {
+                    var card = wrapper.querySelector('.biz-card');
+                    if (!card) return;
+                    var scale = wrapper.clientWidth / 840;
+                    card.style.transform = 'scale(' + scale + ')';
+                });
+            }
+
+            function downloadBizCard(cardEl, safeName) {
+                if (typeof html2canvas !== 'function') {
+                    alert('html2canvas did not load. Check your network and refresh the page.');
+                    return Promise.reject();
+                }
+                var prevTransform = cardEl.style.transform;
+                var clone = cardEl.cloneNode(true);
+                clone.style.transform = 'none';
+                clone.style.position = 'fixed';
+                clone.style.left = '-12000px';
+                clone.style.top = '0';
+                clone.style.margin = '0';
+                clone.classList.add('mav-exporting');
+                document.body.appendChild(clone);
+
+                return html2canvas(clone, {
+                    scale: 3,
+                    width: 840,
+                    height: 480,
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: null
+                })
+                    .then(function (canvas) {
+                        return new Promise(function (resolve, reject) {
+                            canvas.toBlob(function (blob) {
+                                if (!blob) {
+                                    reject(new Error('Empty PNG'));
+                                    return;
+                                }
+                                var fn = safeName + '-2520x1440.png';
+                                if (typeof MaverickSaveBlob !== 'undefined' && MaverickSaveBlob.save) {
+                                    MaverickSaveBlob.save(blob, fn).then(resolve).catch(reject);
+                                    return;
+                                }
+                                var a = document.createElement('a');
+                                var href = URL.createObjectURL(blob);
+                                a.href = href;
+                                a.download = fn;
+                                document.body.appendChild(a);
+                                a.click();
+                                a.remove();
+                                URL.revokeObjectURL(href);
+                                resolve();
+                            }, 'image/png');
+                        });
+                    })
+                    .finally(function () {
+                        cardEl.style.transform = prevTransform;
+                        if (clone.parentNode) clone.parentNode.removeChild(clone);
+                    });
+            }
+
+            buildGrid();
+
+            document.getElementById('cardGrid').addEventListener('change', function (e) {
+                var input = e.target;
+                if (!input.classList || !input.classList.contains('js-biz-upload')) return;
+                var file = input.files && input.files[0];
+                if (!file) return;
+                var wrap = input.closest('.card-container');
+                var card = wrap && wrap.querySelector('.js-biz-card');
+                if (!card) return;
+                var prev = card.dataset.objectUrl;
+                if (prev) URL.revokeObjectURL(prev);
+                var url = URL.createObjectURL(file);
+                card.dataset.objectUrl = url;
+                card.style.backgroundImage = 'url(' + JSON.stringify(url) + ')';
+                input.value = '';
+            });
+
+            document.getElementById('cardGrid').addEventListener('click', function (e) {
+                var btn = e.target.closest('.js-biz-download');
+                if (!btn) return;
+                var wrap = btn.closest('.card-container');
+                var card = wrap && wrap.querySelector('.js-biz-card');
+                if (!card) return;
+                var id = card.getAttribute('id') || 'mav-biz';
+                var prev = btn.textContent;
+                btn.disabled = true;
+                btn.textContent = 'Rendering…';
+                downloadBizCard(card, id)
+                    .catch(function (err) {
+                        console.error(err);
+                        alert('Export failed. Try another image or browser.');
+                    })
+                    .finally(function () {
+                        btn.disabled = false;
+                        btn.textContent = prev;
+                    });
+            });
+
+            window.addEventListener('resize', resizeCards);
+            window.addEventListener('orientationchange', function () {
+                setTimeout(resizeCards, 200);
+            });
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', resizeCards);
+            }
+            window.addEventListener('load', resizeCards);
+            resizeCards();
+        })();
+    </script>
+</body>
+</html>

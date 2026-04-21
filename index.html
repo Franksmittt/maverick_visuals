@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#050608">
+    <title>Maverick — Client Studio</title>
+    <link rel="stylesheet" href="assets/maverick-mobile.css">
+    <style>
+        :root {
+            --charcoal: #0c0e12;
+            --turq: #00d2d3;
+            --green: #00e676;
+            --muted: #9a9ea8;
+            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: var(--font);
+            background: linear-gradient(165deg, #050608 0%, #0f1218 50%, #050608 100%);
+            color: #fff;
+            padding: 28px 20px 48px;
+        }
+        header {
+            text-align: center;
+            max-width: 560px;
+            margin: 0 auto 36px;
+        }
+        h1 {
+            font-weight: 900;
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            letter-spacing: -0.03em;
+            margin: 0 0 10px;
+            color: var(--turq);
+            text-transform: uppercase;
+        }
+        p.lead {
+            margin: 0;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.55;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+            gap: 16px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        a.card {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 20px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(0, 210, 211, 0.25);
+            background: rgba(17, 20, 24, 0.92);
+            text-decoration: none;
+            color: inherit;
+            min-height: 44px;
+            transition: border-color 0.15s ease, transform 0.15s ease;
+        }
+        a.card:hover,
+        a.card:focus-visible {
+            border-color: rgba(0, 210, 211, 0.55);
+            transform: translateY(-2px);
+        }
+        a.card strong {
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 0.02em;
+        }
+        a.card span {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.45;
+        }
+        a.card .go {
+            margin-top: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--green);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Maverick</h1>
+        <p class="lead">Choose a tool. Upload images where offered, then download PNGs. On phones, use <strong>Share</strong> when the sheet appears to save to Files or Photos.</p>
+    </header>
+    <nav class="grid" aria-label="Maverick tools">
+        <a class="card" href="maverick-studio.html">
+            <strong>Business cards</strong>
+            <span>Six print layouts, background upload, high-res export.</span>
+            <span class="go">Open →</span>
+        </a>
+        <a class="card" href="maverick-social.html">
+            <strong>Social templates</strong>
+            <span>25 square overlays for feed graphics.</span>
+            <span class="go">Open →</span>
+        </a>
+        <a class="card" href="maverick-brand.html">
+            <strong>Brand guide</strong>
+            <span>Colours, type, and usage reference.</span>
+            <span class="go">Open →</span>
+        </a>
+        <a class="card" href="maverick-flyer.html">
+            <strong>Flyers &amp; brochures</strong>
+            <span>Print-ready layouts.</span>
+            <span class="go">Open →</span>
+        </a>
+        <a class="card" href="maverick-corporate.html">
+            <strong>Corporate</strong>
+            <span>Letterhead and corporate views.</span>
+            <span class="go">Open →</span>
+        </a>
+    </nav>
+</body>
+</html>
