@@ -86,6 +86,35 @@
             text-transform: uppercase;
             letter-spacing: 0.06em;
         }
+        .hub-internal {
+            max-width: 900px;
+            margin: 36px auto 0;
+            padding-top: 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .hub-internal-label {
+            margin: 0 0 14px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: #5c616b;
+        }
+        a.card.card--internal {
+            border-color: rgba(251, 191, 36, 0.28);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        a.card.card--internal:hover,
+        a.card.card--internal:focus-visible {
+            border-color: rgba(251, 191, 36, 0.5);
+        }
+        a.card.card--internal strong { color: #fbbf24; }
+        a.card.card--internal span { color: #a1a1aa; }
+        a.card.card--internal .go {
+            color: #fcd34d;
+        }
     </style>
 </head>
 <body>
@@ -125,5 +154,15 @@
             <span class="go">Open →</span>
         </a>
     </nav>
+
+    <section class="hub-internal" aria-label="Internal tools">
+        <p class="hub-internal-label">Internal (not for client handoff)</p>
+        <a class="card card--internal" href="maverick-admin.html">
+            <strong>Admin · image prompts</strong>
+            <span>Your saved generator prompts. PIN required — keeps casual visitors out.</span>
+            <span class="go">Open →</span>
+        </a>
+    </section>
 </body>
 </html>
+

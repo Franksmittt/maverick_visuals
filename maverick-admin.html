@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#050608">
+    <title>Maverick — Admin</title>
+    <link rel="stylesheet" href="assets/maverick-mobile.css">
+    <style>
+        :root {
+            --turq: #00d2d3;
+            --green: #00e676;
+            --muted: #9a9ea8;
+            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: var(--font);
+            background: #050608;
+            color: #fff;
+            padding: 24px 18px 48px;
+        }
+        .top {
+            max-width: 720px;
+            margin: 0 auto 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .top a {
+            color: var(--muted);
+            font-size: 14px;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(161, 161, 166, 0.35);
+        }
+        .top a:hover { color: #fff; }
+        #pin-gate {
+            max-width: 400px;
+            margin: 12vh auto 0;
+            padding: 28px 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(17, 20, 24, 0.95);
+        }
+        #pin-gate h1 {
+            margin: 0 0 8px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--turq);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        #pin-gate p.lead {
+            margin: 0 0 20px;
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+        #pin-form label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+        #pin-input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: #0c0e12;
+            color: #fff;
+            font-size: 18px;
+            letter-spacing: 0.2em;
+            margin-bottom: 16px;
+        }
+        #pin-input:focus {
+            outline: none;
+            border-color: var(--turq);
+        }
+        #pin-form button[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: var(--turq);
+            color: #000;
+            font-weight: 800;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+        }
+        #pin-form button[type="submit"]:hover { background: var(--green); }
+        #pin-err {
+            margin: 12px 0 0;
+            font-size: 13px;
+            color: #f87171;
+        }
+        #admin-main { max-width: 960px; margin: 0 auto; }
+        #admin-main[hidden], #pin-gate[hidden] { display: none !important; }
+        .bank {
+            margin-bottom: 36px;
+        }
+        .bank h2 {
+            margin: 0 0 8px;
+            font-size: 1rem;
+            color: var(--turq);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .bank p.hint {
+            margin: 0 0 12px;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.45;
+        }
+        .bank-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .bank-toolbar button {
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 210, 211, 0.4);
+            background: rgba(0, 210, 211, 0.12);
+            color: var(--turq);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .bank-toolbar button:hover { background: rgba(0, 210, 211, 0.22); }
+        .bank-toolbar .done {
+            color: var(--green);
+            border-color: rgba(0, 230, 118, 0.4);
+        }
+        pre.copy-target {
+            margin: 0;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #0c0e12;
+            color: #e5e7eb;
+            font-size: 12px;
+            line-height: 1.45;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: min(70vh, 560px);
+            overflow-y: auto;
+        }
+        .lock-row {
+            max-width: 960px;
+            margin: 24px auto 0;
+            text-align: right;
+        }
+        .lock-row button {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--muted);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .lock-row button:hover { color: #fff; border-color: rgba(255, 255, 255, 0.35); }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <a href="index.html">← Back to hub</a>
+    </div>
+
+    <div id="pin-gate">
+        <h1>Admin</h1>
+        <p class="lead">Internal image prompts only. Enter PIN to continue.</p>
+        <form id="pin-form" novalidate>
+            <label for="pin-input">PIN</label>
+            <input id="pin-input" type="password" name="pin" inputmode="numeric" autocomplete="one-time-code" maxlength="12" required placeholder="•••••">
+            <button type="submit">Unlock</button>
+            <p id="pin-err" role="alert" hidden>Incorrect PIN. Try again.</p>
+        </form>
+    </div>
+
+    <div id="admin-main" hidden>
+        <div class="bank">
+            <h2>Hospital epoxy workflow (JSON)</h2>
+            <p class="hint">Copy as one block for your generator / notes.</p>
+            <div class="bank-toolbar">
+                <button type="button" data-copy="#json-hospital">Copy</button>
+            </div>
+            <pre id="json-hospital" class="copy-target"></pre>
+        </div>
+
+        <div class="bank">
+            <h2>Industrial factory floor (JSON)</h2>
+            <p class="hint">Six stages — concrete through finished mirror.</p>
+            <div class="bank-toolbar">
+                <button type="button" data-copy="#json-factory">Copy</button>
+            </div>
+            <pre id="json-factory" class="copy-target"></pre>
+        </div>
+
+        <div class="bank">
+            <h2>Residential interior (JSON)</h2>
+            <p class="hint">Prep through reveal / finished room.</p>
+            <div class="bank-toolbar">
+                <button type="button" data-copy="#json-residential">Copy</button>
+            </div>
+            <pre id="json-residential" class="copy-target"></pre>
+        </div>
+
+        <div class="bank">
+            <h2>Extra single prompts (plain text)</h2>
+            <p class="hint">Six standalone prompts + intro blurb.</p>
+            <div class="bank-toolbar">
+                <button type="button" data-copy="#text-extra">Copy</button>
+            </div>
+            <pre id="text-extra" class="copy-target"></pre>
+        </div>
+
+        <div class="lock-row">
+            <button type="button" id="lock-btn">Lock (this browser tab)</button>
+        </div>
+    </div>
+
+    <script>
+(function () {
+    var SESSION_KEY = 'mav_admin_ok_v1';
+    var pinGate = document.getElementById('pin-gate');
+    var adminMain = document.getElementById('admin-main');
+    var pinForm = document.getElementById('pin-form');
+    var pinInput = document.getElementById('pin-input');
+    var pinErr = document.getElementById('pin-err');
+    var lockBtn = document.getElementById('lock-btn');
+
+    var DATA = {
+        hospital: [
+            {"stage":"Infection Control & Prep (Sealing the Ward)","prompt":"Raw documentary photography, highly realistic. A Black male contractor in a hospital corridor, meticulously taping heavy clear plastic sheeting over a set of double doors to seal off the work zone from the active hospital. He is wearing a black one-piece overall with faint dust and dried paint marks. His hands show real skin texture and effort as he presses the blue painter's tape against the clinical white door frame. Bright, harsh fluorescent hospital lighting. 35mm lens, unretouched, authentic, no CGI.","rationale":"Shows that Maverick respects the sensitive environment of a medical facility. Dust mitigation and infection control are massive selling points for hospital administrators."},
+            {"stage":"Dustless Substrate Prep (HEPA Grinding)","prompt":"Realistic industrial photography, documentary style. A Black male contractor operating a walk-behind concrete floor grinder in a stripped-down hospital hallway. The grinder is attached to a massive industrial HEPA vacuum with thick ribbed hoses. He is wearing a dusty black one-piece overall, safety glasses, and a respirator mask. The environment is a mix of sterile hospital white walls and raw, exposed grey concrete flooring. Clinical overhead lighting, highly detailed, gritty but controlled labor, 50mm lens.","rationale":"Proves that they use the right gear for the environment. Hospital jobs require 'dustless' systems, and showing the heavy vacuum equipment establishes ultimate professionalism."},
+            {"stage":"Hygienic Coving (The Wall-to-Floor Curve)","prompt":"Candid photojournalism, extreme realism. Low angle close-up of a Black male contractor kneeling on a concrete floor next to a white hospital wall. He is wearing faded black one-piece overalls with heavy grey dust on the knees. He is using a specialized curved steel coving trowel to meticulously sculpt a seamless, curved epoxy baseboard where the floor meets the wall. Authentic, calloused hands with a bit of grey resin on the knuckles. Shallow depth of field, sharp focus on the trowel and the smooth curve. Unstaged, raw.","rationale":"Coving is a strict health and safety requirement in hospitals so bacteria can't build up in 90-degree corners. Highlighting this specific technical skill screams 'we are medical facility experts'."},
+            {"stage":"Active Pour (Medical Grade Resin)","prompt":"Hyper-realistic on-site construction photography. Wide shot looking down a long, bright hospital corridor. A Black male contractor is pouring a heavy bucket of thick, pale medical-blue epoxy resin onto the floor. He is wearing a black one-piece overall with fresh resin drips on the boots and cuffs, and specialized spiked shoes. The wet resin is highly reflective, bouncing the harsh white fluorescent ceiling lights. Deep depth of field, authentic mid-job chaos contrasting with clinical walls. No CGI, perfectly lifelike.","rationale":"Captures the critical moment of the pour. The pale blue/grey resin is classic for medical environments, and the spiked shoes reinforce the specialized nature of the work."},
+            {"stage":"Topcoat Application (Anti-Slip Finish)","prompt":"Cinematic documentary photography, unpolished. A Black male contractor in a hospital room, standing on a glossy wet epoxy floor wearing spiked cleats. He is using a long metal extension pole with a high-quality roller to apply a clear, matte anti-slip topcoat over the resin. He is wearing a dark charcoal one-piece overall speckled with white and grey dust. Intense, focused expression. The room has clinical medical gas outlets on the walls. Natural window light mixing with harsh overheads. 85mm lens, photorealistic.","rationale":"Shows the final technical step. Hospitals need anti-slip surfaces that are still easy to clean. The concentration on the worker's face emphasizes the zero-margin-for-error nature of the job."},
+            {"stage":"Finished Floor (The Clinical Mirror & The Worker)","prompt":"Editorial documentary photography. A stunning wide shot of a finished, completely seamless, high-gloss pale grey hospital corridor. It looks absolutely pristine and sterile, reflecting the doors and lights perfectly. Just outside the finished zone, standing on a taped-off raw concrete section, a Black male contractor in a heavily soiled, dusty, and paint-splattered black one-piece overall is wiping sweat from his forehead with a rag. Stark, beautiful contrast between the dirty labor and the flawless medical environment. 24mm lens.","rationale":"The ultimate payoff shot. It visualizes the core brand message: the pristine, ultra-hygienic environment exists entirely because of the hard, gritty work put in by the Maverick specialist."}
+        ],
+        factory: [
+            {"stage":"Surface Preparation (Concrete Grinding)","prompt":"Raw industrial documentary photography, highly realistic. A Black male contractor operating a heavy-duty, walk-behind concrete floor grinder in a massive, dimly lit factory. He is wearing a black one-piece overall heavily coated in grey concrete dust from the knees down, along with industrial ear muffs and a respirator mask. The grinder is kicking up a slight haze of dust. Harsh lighting from high-bay warehouse lights cutting through the dust. 35mm lens, gritty, unretouched, authentic heavy labor.","rationale":"Shows that Maverick understands the most critical step of epoxy flooring: mechanical profile prep. The heavy dust on the dark overalls grounds the image in undeniable reality."},
+            {"stage":"Substrate Patching (Crack Filling)","prompt":"Candid photojournalism, extreme realism. Low angle close-up of a Black male contractor kneeling on a rough concrete factory floor. He is wearing faded black one-piece overalls with heavily scuffed and dusty knees. He is using a steel hand trowel to aggressively pack a thick epoxy patching compound into a jagged structural crack in the concrete. Authentic skin texture on his bare hands, showing minor calluses and dirt. Ambient industrial lighting, 50mm lens, shallow depth of field focusing on the tool and the crack.","rationale":"Focuses on the meticulous structural remediation that happens before the coating goes down. The scuffed knees of the overall prove this is real, hard work."},
+            {"stage":"Chemical Mixing (The Resin Station)","prompt":"Cinematic documentary photography, unpolished. A Black male contractor standing over a large industrial mixing bucket in a warehouse loading bay. He is holding a heavy-duty power drill fitted with a long metal mixing paddle, aggressively churning a thick, grey, two-part epoxy resin. He is wearing a black one-piece overall with visible chemical smudges and dried epoxy drips. He has thick black nitrile gloves on. Focused expression. Natural daylight spilling in from an open rolling warehouse door. 85mm lens, photorealistic.","rationale":"Highlights the technical, chemical nature of advanced coatings. The mixing process is crucial for epoxy, and capturing the viscous texture of the resin adds immense realism."},
+            {"stage":"Active Application (Notched Squeegee)","prompt":"Hyper-realistic on-site construction photography. Wide shot of a Black male contractor in a massive industrial corridor. He is wearing a black one-piece overall, bending forward and pulling a wide, metal-notched squeegee through a massive puddle of self-leveling dark grey epoxy. The wet epoxy is highly reflective, mirroring the harsh overhead fluorescent lights. The contractor's overall has wet splashes of resin on the boots and cuffs. Deep depth of field, sharp focus, no CGI, completely authentic.","rationale":"Captures the heavy physical exertion and the specific professional tools used for industrial floor coatings. The reflection in the wet epoxy creates a striking visual."},
+            {"stage":"De-Aeration (Spiked Shoes & Roller)","prompt":"Realistic architectural photography, documentary style. Full body shot of a Black male contractor walking directly on top of a freshly laid, wet, glossy grey epoxy floor inside a warehouse. He is wearing specialized spiked epoxy cleats over his work boots to avoid leaving footprints. He is wearing a worn black one-piece overall and using an extension pole with a spiked porcupine roller to release air bubbles from the wet resin. Intense focus. Crisp industrial lighting, 50mm lens, raw and lifelike.","rationale":"The spiked shoes and spiked roller are highly specific insider tools for epoxy work. Seeing them in use instantly signals to facility managers that this team knows exactly what they are doing."},
+            {"stage":"Finished Floor (The Mirror Finish & The Worker)","prompt":"Editorial documentary photography. A wide shot looking down a vast warehouse aisle. The floor is a completely flawless, seamless, high-gloss grey epoxy that looks like glass, reflecting the factory ceiling perfectly. In the foreground edge, standing on the untreated concrete boundary, a Black male contractor in a dusty, paint-splattered black one-piece overall stands with his hands on his hips, admiring the finished cure. Stark contrast between the dirty, gritty worker and the pristine, clinical perfection of the floor. Unretouched, 24mm lens.","rationale":"The ultimate proof of concept. It contrasts the gritty reality of the laborer against the premium, high-performance outcome they deliver to the client."}
+        ],
+        residential: [
+            {"stage":"Interior Prep (Masking and Taping)","prompt":"Candid documentary photography, highly realistic. Over-the-shoulder shot of a Black male painter kneeling on a canvas drop cloth in a modern residential living room. He is wearing faded black one-piece overalls with dried white paint scuffs. He is meticulously applying blue painter's tape along the edge of a wooden baseboard. His hands show real skin texture and minor paint stains. Natural daylight streaming through a nearby window, casting soft shadows. Shallow depth of field, 50mm lens, unretouched, no CGI, authentic prep work.","rationale":"Sells the meticulous nature of interior prep. The focus on the tape and baseboard shows that Maverick cares about the details and protecting the homeowner's property."},
+            {"stage":"Interior Prep (Sanding and Patching)","prompt":"Raw architectural photography, unpolished reality. A Black male contractor standing in a partially prepped bedroom, using a sanding sponge on a freshly patched drywall seam. He is wearing a black one-piece overall that is heavily dusted with fine white gypsum powder across the chest and thighs. He has a white dust mask pulled down around his neck. White canvas drop cloths cover the floor. Ambient room lighting, gritty texture, sharp focus on the dust and action. 35mm lens, completely photorealistic.","rationale":"Shows the unglamorous but vital step of substrate preparation. The drywall dust on the dark overalls creates a highly authentic, blue-collar visual."},
+            {"stage":"Active Painting (Cutting In / Ceiling Line)","prompt":"Hyper-realistic on-site photography. Low angle close-up of a Black male professional painter standing on a small aluminum step ladder in a residential hallway. He is wearing black one-piece overalls dotted with fresh white paint splatters. He is intensely focused, holding a high-quality angled paintbrush, cutting in a razor-sharp line of grey paint where the wall meets the white ceiling. Sweat on his brow, realistic lighting from a ceiling fixture. Macro details on the brush bristles and paint texture. No artificial studio lights.","rationale":"Highlights expert precision and a steady hand. Cutting in without tape is a mark of a true professional, and the low angle makes the contractor look authoritative."},
+            {"stage":"Active Painting (Wall Rolling)","prompt":"Realistic documentary style. Wide shot of a residential dining room. A Black male contractor is using a metal extension pole with a thick roller to apply smooth, matte turquoise paint to a large accent wall. He is wearing a heavy-duty black one-piece overall with paint marks. A metal paint tray sits on a thick, paint-stained canvas drop cloth on the floor. Furniture in the background is covered in clear plastic sheeting. Bright natural light from a window. 24mm lens, authentic mid-job environment, highly lifelike.","rationale":"Demonstrates the scale of interior work while subtly showing off the protective plastic sheeting on the furniture—reassuring the target audience that their home is safe."},
+            {"stage":"Finalizing (The Reveal / Tape Peel)","prompt":"Cinematic documentary photography, extreme close-up. The paint-stained hands of a Black male contractor gently pulling away a strip of blue painter's tape from a door frame. The peel reveals a flawless, razor-sharp edge between a crisp white wooden door frame and a newly painted dark charcoal wall. The cuff of his black overall is visible, dusted with drywall powder. Perfect lighting highlighting the wet sheen of the fresh paint versus the dry tape. 100mm macro lens, satisfying, hyper-detailed, unretouched.","rationale":"The 'tape peel' is universally satisfying and acts as undeniable proof of a flawless, high-quality finish and expert masking."},
+            {"stage":"Finished (Pristine Room & The Worker)","prompt":"Editorial interior photography mixed with raw documentary style. A wide shot of a flawlessly painted, modern living room with crisp white ceilings and flawless charcoal walls. In the foreground, slightly out of focus, a Black male contractor in paint-splattered black overalls is rolling up a heavy canvas drop cloth, packing up his gear. The contrast between the dirty, hard-working contractor and the absolute perfection of the finished room is stark. Soft afternoon sunlight, 35mm lens, highly realistic, no CGI.","rationale":"Creates a powerful visual contrast. It proves that the beautiful, pristine home is the direct result of the gritty, messy labor provided by the Maverick specialist."}
+        ],
+        extra: "Fucking brilliant. Let's get into the nitty-gritty. We're pushing close-ups, over-the-shoulder shots, and macro details to build out a massive, highly authentic asset library. No plastic CGI bullshit, just real workers doing the actual heavy lifting.\n\nHere are 6 new, highly detailed prompts formatted separately so you can just copy and paste them straight into your image generator.\n\n***\n\n**Prompt 1: Expansion Joint Sealing (Macro Close-Up, Hands Only)**\nDocumentary style photography, hyper-realistic, extreme close-up. Focus on the hands and forearms of a Black male contractor sealing a large concrete expansion joint. He is wearing a heavy-duty black one-piece overall; the cuffs are frayed and dusted with grey concrete powder and white paint. He is using a professional caulking gun to squeeze thick grey polyurethane sealant into the concrete gap. Realistic skin texture with faint paint smudges on his knuckles. Shot on 100mm macro lens, shallow depth of field, natural harsh lighting. No CGI, raw industrial texture.\n\n***\n\n**Prompt 2: Rope Access Painting (Wide Scale, Faceless / Back View)**\nRealistic architectural photography, unretouched. A Black male professional painter suspended on industry-standard rope access gear against the massive concrete wall of a high-rise commercial building. Shot from behind and slightly below, his face is not visible. He is wearing a faded black one-piece overall speckled with white and turquoise paint drops, strapped tightly into a heavy-duty safety harness. He is using an extension pole roller to apply thick coating to the wall. Bright daytime sunlight, deep shadows, 35mm lens, authentic urban construction environment, completely photorealistic.\n\n***\n\n**Prompt 3: Liquid Applied Waterproofing / Balcony (Over-The-Shoulder, Focused)**\nCandid photojournalism, realistic. Over-the-shoulder shot of a Black male contractor kneeling on an exposed, weathered concrete balcony. He is wearing a black one-piece overall that shows heavy wear, knee-scuffs, and dried grey waterproofing compound. He is using a thick industrial brush to cut in a dark grey liquid membrane along the corner where the floor meets the wall. Natural overcast outdoor light, muted tones, highly detailed concrete textures. 50mm lens, eye-level, unstaged, no artificial lighting.\n\n***\n\n**Prompt 4: Industrial Corrosion Control (Profile, Action & Dust)**\nRaw documentary photography, gritty and realistic. A Black male contractor prepping massive rusted steel I-beams in an old industrial factory. Side profile shot. He is wearing a black one-piece overall covered in orange rust dust and grime, along with safety glasses and heavy leather gloves. He is using an angle grinder with a wire cup brush to strip the rust, creating a cloud of fine dust and a few sparks. Natural dim factory lighting piercing through high windows. Cinematic but raw, unpolished, 85mm lens.\n\n***\n\n**Prompt 5: Continuous QA Inspection (Close-Up, Tool & Texture)**\nHyper-realistic industrial photography, unretouched. Extreme close-up of a Black male contractor's hand pressing a digital Dry Film Thickness (DFT) gauge against a freshly painted commercial steel door frame. The sleeve of his black one-piece overall is visible, showing a few stray paint splatters and dust. The hand looks real, with authentic skin texture and a smudge of grease on the thumb. The digital screen of the gauge is in sharp focus. Clinical, precise, but clearly on a real, dirty job site. Macro lens, sharp contrast.\n\n***\n\n**Prompt 6: Rising Damp Treatment (Low Angle, Crouching)**\nRealistic on-site photography, documentary style. Low angle shot of a Black male contractor crouching near the base of an interior brick wall where the plaster has been stripped away. He is wearing a black one-piece overall heavily dusted with white plaster and brick dust. He is holding a specialized injection pump, pumping damp-proof cream into drilled holes along the mortar line. Only the side of his face is visible, focused and sweating slightly. Dim ambient indoor construction lighting, raw and authentic, no studio lights.\n"
+    };
+
+    function prettyJson(arr) {
+        return JSON.stringify(arr, null, 2);
+    }
+
+    function unlockUi() {
+        pinGate.hidden = true;
+        adminMain.hidden = false;
+        sessionStorage.setItem(SESSION_KEY, '1');
+    }
+
+    function lockUi() {
+        sessionStorage.removeItem(SESSION_KEY);
+        pinGate.hidden = false;
+        adminMain.hidden = true;
+        pinInput.value = '';
+        pinErr.hidden = true;
+    }
+
+    function checkPin(raw) {
+        var s = String(raw || '').replace(/\D/g, '');
+        var target = [8, 5, 8, 7, 9].join('');
+        return s === target;
+    }
+
+    document.getElementById('json-hospital').textContent = prettyJson(DATA.hospital);
+    document.getElementById('json-factory').textContent = prettyJson(DATA.factory);
+    document.getElementById('json-residential').textContent = prettyJson(DATA.residential);
+    document.getElementById('text-extra').textContent = DATA.extra;
+
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+        unlockUi();
+    }
+
+    pinForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        pinErr.hidden = true;
+        if (checkPin(pinInput.value)) {
+            unlockUi();
+        } else {
+            pinErr.hidden = false;
+            pinInput.select();
+        }
+    });
+
+    lockBtn.addEventListener('click', lockUi);
+
+    document.querySelectorAll('[data-copy]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var sel = btn.getAttribute('data-copy');
+            var el = document.querySelector(sel);
+            if (!el) return;
+            var text = el.textContent;
+            function markDone() {
+                btn.classList.add('done');
+                btn.textContent = 'Copied';
+                setTimeout(function () {
+                    btn.classList.remove('done');
+                    btn.textContent = 'Copy';
+                }, 1600);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(markDone).catch(function () {
+                    window.prompt('Copy:', text);
+                });
+            } else {
+                window.prompt('Copy:', text);
+            }
+        });
+    });
+})();
+    </script>
+</body>
+</html>
